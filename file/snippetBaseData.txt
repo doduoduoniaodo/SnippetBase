@@ -1,0 +1,778 @@
+5
+Searching
+Sorting
+Recursion
+Graph Theory
+Utility
+17
+Linear Search
+Java
+Searching,
+2026-06-08
+public static int linearSearch(int[] arr, int target) {
+
+	// Loop through each element in the array
+	for (int i = 0; i < arr.length; i++) {
+		
+		// Check if the current element matches the target
+		if (arr[i] == target)
+			return i;	// if so, return the index of it
+	}
+	
+	// Target is not in the array
+	return -1;
+}
+[SPLIT]
+Binary Search
+Java
+Searching,
+2026-06-08
+public static int binarySearch(int[] arr, int target) {
+	
+	int low = 0;	// low end of the search area
+	int high = arr.length - 1;	// high end of the search area
+	
+	// loop to search for the element
+	while (low <= high) {
+		
+		// calculate the index of the middle element
+		int mid = (low + high) / 2;
+		
+		// check if the middle element is the target
+		if (arr[mid] == target)
+			return mid;
+		// Else if the element at that middle position is less than the target
+		else if (arr[mid] < target)
+			// Move the lowest position to one position after the middle
+			low = mid + 1;
+		// Otherwise, if x is smaller
+		else
+			// Move the highest position ot one position before the middle
+			high = mid - 1;
+	}
+	
+	// the element is not present
+	return -1;
+}
+[SPLIT]
+Exponential Search
+Java
+Searching,
+2026-06-08
+public static int exponentialSearch(int[] arr, int target) {
+	int n = arr.length;
+
+	if (arr[0] == target)
+		return 0;
+	
+	// Find range of indexes where element is present
+	
+	// The idea is to start with subarray size 1, compare its last element with x, 
+	// then try size 2, then 4 and so on until last element of a subarray is not greater. 
+	int exp = 1;		// store the power
+	while (exp < n && arr[exp] <= target)
+		exp *= 2;
+	
+	 // Once we find an index i (after repeated doubling of i), 
+	 // we know that the element must be present between i/2 and i 
+	 // (Why i/2? because we could not find a greater value in previous iteration)
+	int low = exp / 2;
+	int high = Math.min(exp, n-1);
+	
+	// Binary Search
+	while (low <= high) {
+		int mid = (low + high) / 2;
+		
+		if (arr[mid] == target)
+			return mid;
+		else if (arr[mid] < target)
+			low = mid + 1;
+		else
+			high = mid - 1;
+	}
+	
+	return -1;
+}
+[SPLIT]
+Bubble Sort
+Java
+Sorting,
+2026-06-08
+public static void bubbleSort(int[] arr) {
+	
+	int n = arr.length;
+	
+	// Perform n-1 passes
+	for (int i=0; i<n-1; i++) {
+		
+		boolean swapped = false;		// Track if a swap occurs
+		
+		// Compare from the start of the array
+		// Compare adjacent elements up to the unsorted portion 
+		for (int j=0; j<n-i-1; j++) {
+			
+			// If elements are in wrong order, swap them
+			if (arr[j] > arr[j+1]) {
+				
+				// swap
+				int temp = arr[j];
+				arr[j] = arr[j+1];
+				arr[j+1] = temp;
+				
+				// Mark that a swap occurred
+				swapped = true;
+				
+			}
+			
+		}
+		
+		// If no swaps happened, array is already sorted
+		if (!swapped)
+			break;
+		
+	}
+[SPLIT]
+Selection Sort
+Java
+Sorting,
+2026-06-08
+public static void selectionSort(int[] arr) {
+	// Iterate through the list
+	for (int i = 0; i < arr.length-1; i++) {
+		
+		// The current element should be the first element in the unsorted portion
+		// Assume the current element is the minimum element
+		int min_index = i; 
+		
+		// Iterate through the unsorted portion to find the minimum element
+		for (int j = i+1; j < arr.length; j++) {
+			
+			// If that element is smaller than the temporary minimum
+			if (arr[j] < arr[min_index])
+				// Update the index of the minimum element
+				min_index = j;
+			
+		}
+		
+		// Swap the current element with the minimum element 
+		int temp = arr[i];
+		arr[i] = arr[min_index];
+		arr[min_index] = temp;
+		
+	}
+	
+}
+[SPLIT]
+Insertion Sort
+Java
+Sorting,
+2026-06-08
+public static void insertionSort(int[] arr) {
+	 
+    // Loop through the array starting from the second element
+    // The first element is considered already sorted
+	for (int i = 1; i < arr.length; i++) {
+		
+		int index = i;
+		
+		// Compare current element with elements in the sorted portion
+		for (int j = i-1; j >= 0; j--) {
+			
+			// If current element is smaller, swap it with the element in the sorted portion
+			// (keep moving to the front of the array)
+			if (arr[index] < arr[j]) {
+				
+				int temp = arr[index];
+				arr[index] = arr[j];
+				arr[j] = temp;
+				
+				index--;		// Move current index back to continue comparing
+			}
+			
+			// Current element is in the correct position
+			else {
+				
+				break;
+				
+			}
+			
+		}
+		
+	}
+[SPLIT]
+Counting Sort
+Java
+Sorting,
+2026-06-08
+public static void countingSort(int[] arr, int range) {
+	
+	// Create and initialize counting array (tally) to store frequencies
+	int[] count = new int[range+1];
+	
+	// Count occurrences of each value
+	for (int value: arr) {
+		count[value]++;
+	}
+	
+	// Rebuild the array in sorted order
+	int index = 0;
+	for (int i=0; i<count.length; i++){
+		
+		if (count[i] > 0) {
+			
+			// Place each value i count[i] times
+			for (int j=0; j<count[i]; j++) {
+				
+				arr[index] = i;
+				index++;
+				
+			}
+			
+		}
+		
+	}
+}
+[SPLIT]
+Bucket Sort
+Java
+Sorting,
+2026-06-08
+public static void bucketSort(int[] arr, int range) {
+	
+	int n = arr.length;
+	
+	// Calculate the number of buckets
+	int numBuckets = (int) (Math.sqrt(range)) + 1;
+	
+	// Create empty buckets
+	ArrayList<Integer>[] buckets = new ArrayList[numBuckets];
+	for (int i=0; i<numBuckets; i++)
+		buckets[i] = new ArrayList<Integer>();
+	
+	// Distribute elements into buckets
+	for (int value: arr) {
+		buckets[value / numBuckets].add(value);
+	}
+	
+	// Sort each bucket and merge back into original array
+	int index = 0;
+	for (ArrayList<Integer> bucket: buckets) {
+		
+		if (bucket.size() > 0) {
+			
+			// Convert the ArrayList into array for insertionSort() method
+			int [] temp = new int[bucket.size()];
+			for (int i=0; i<bucket.size(); i++) {
+				temp[i] = bucket.get(i);
+			}
+			
+			// Sort the bucket
+			insertionSort(temp);
+			
+			// Put the elements in the bucket back into the original array
+			for (int i=0; i<bucket.size(); i++) {
+				arr[index++] = temp[i];
+			}
+			
+		}
+	}
+}
+[SPLIT]
+Radix Sort
+Java
+Sorting,
+2026-06-08
+public static void radixSort(int[] arr, int range) {
+	
+	// Determine number of digits in the largest number
+	// MSD = Most Significant Digit --> The leftmost digit
+	// LSD = Lest Significant Digit --> The rightmost digit
+	int msd = (int) (Math.log10(range) + 1);
+	
+	// Create 10 buckets for digit 0-9
+	ArrayList<Integer>[] digit = new ArrayList[10];
+	for (int i = 0; i < 10; i++) {
+		digit[i] = new ArrayList<Integer>();
+	}
+	
+	// Process each digit position (LSD to MSD)
+	for (int i = 0; i < msd; i++){
+		
+		// Place numbers into buckets based on current digit
+		for (int j = 0; j < arr.length; j++) {
+			digit[(int) (arr[j] / Math.pow(10, i)) % 10].add(arr[j]);		// or (int) (arr[j] / Math.pow(10, i) % 10)	
+		}
+		
+		// Collect numbers back into array in bucket order
+		int index = 0;
+		for (int j = 0; j < 10; j++) {
+			while (!digit[j].isEmpty()) {
+				arr[index++] = digit[j].remove(0);
+			}
+
+		}
+		
+	}
+}
+[SPLIT]
+Shell Sort
+Java
+Sorting,
+2026-06-08
+public static void shellSort(int[] arr) {
+	
+	boolean swapped;
+	int gap = arr.length / 2;
+	
+	do {
+		
+		do {
+			
+			swapped = false;
+			
+			for (int i = 0; i < arr.length - gap; i++) {
+				
+				if (arr[i] > arr[i + gap]) {
+					
+					int temp = arr[i];
+					arr[i] = arr[i + gap];
+					arr[i + gap] = temp;
+					
+					swapped = true;
+					
+				}
+				
+			}
+			
+		} while(swapped);
+		
+		gap /= 2;
+		
+	} while (gap >= 1);
+}
+[SPLIT]
+quickSort
+Java
+Sorting,Recursion,
+2026-06-08
+public static void quickSort(int[] arr, int start, int end) {
+	
+	int left = start;
+	int right = end;
+	int pivot = arr[(left + right) / 2];	// middle
+	
+	// -------- PARTITION -------- //
+	
+	// Rearrange elements so that: 
+	//	values less than pivot go to the left
+	//	values greater than pivot go to the right
+	while (left <= right) {
+		
+		// Move left pointer right until element >= pivot
+		while (arr[left] < pivot)
+			left++;
+		
+		// Move right pointer left until element <= pivot
+		while (arr[right] > pivot)
+			right--;
+		
+		// If pointers have not crossed, swap elements
+		if (left <= right) {
+			
+			int temp = arr[left];
+			arr[left] = arr[right];
+			arr[right] = temp;
+			
+			left++;
+			right--;
+			
+		}
+		
+	}
+	
+	// -------- RECURSION -------- //
+	
+	// Recursively sort left partition if it contains more than 1 element
+	if (right > start)
+		quickSort(arr, start, right);
+	// Recursively sort right partition if it contains more than 1 element
+	if (left < end)
+		quickSort(arr, left, end);
+	
+}
+[SPLIT]
+Merge Sort
+Java
+Sorting,Recursion,
+2026-06-08
+public static void mergeSort(int[] arr, int start, int end) {
+	
+	// If array has more than one element
+	if (start < end) {
+		
+		// Find the middle point
+		int middle = (start + end) / 2;
+		
+		// Sort first and second halves
+		mergeSort(arr, start, middle);
+		mergeSort(arr, middle + 1, end);
+		
+		// Merge the two sorted halves
+		merge(arr, start, end);
+		
+	}
+	
+}
+private static void merge(int[] arr, int start, int end) {
+	
+	// Index for merged array
+	int mergeIndex = 0;
+	
+	// find the middle position
+	int middle = (start + end) / 2;
+	
+	// Starting indices for left and right halves
+	int leftIndex = start;
+	int rightIndex = middle+1;
+	
+	// Temporary array to store merged result
+	int[] mergedSubArray = new int[end - start + 1];
+	
+	// Compare elements from both halves and merge in order
+	while (leftIndex <= middle && rightIndex <= end) {
+		
+		if (arr[leftIndex] < arr[rightIndex]) {
+			mergedSubArray[mergeIndex] = arr[leftIndex];
+			leftIndex++;
+		} 
+		else {
+			mergedSubArray[mergeIndex] = arr[rightIndex];
+			rightIndex++;
+		}
+		
+		mergeIndex++;
+		
+	}
+	
+	// Copy remaining elements from right half (if any)
+	if (leftIndex > middle) {
+		
+		while (rightIndex <= end) {
+			mergedSubArray[mergeIndex] = arr[rightIndex];
+			mergeIndex++;
+			rightIndex++;
+		}
+		
+	}
+	// Copy remaining elements from left half (if any)
+	else {
+		
+		while (leftIndex <= middle) {
+			mergedSubArray[mergeIndex] = arr[leftIndex];
+			mergeIndex++;
+			leftIndex++;
+		}
+		
+	}
+	
+	// Copy merged result back into original array
+	for (int i = 0; i < mergedSubArray.length; i++) {
+		arr[start + i] = mergedSubArray[i];
+	}
+}
+[SPLIT]
+Dijkstra's Algorithm
+Python
+Graph Theory,
+2026-06-12
+import heapq
+from sys import stdin
+input = stdin.readline
+
+# Adjacency List
+n, m = map(int, input().split())
+adj = {i:[] for i in range(1, n+1)}
+for _ in range(m):
+    u, v, w = map(int, input().split())
+    adj[u].append((v, w))
+    adj[v].append((u, w))
+
+queue = []
+heapq.heappush(queue, (0, 1))
+distance = [float('inf')] * (n+1)
+distance[1] = 0
+while queue:
+    dist, u = heapq.heappop(queue)
+    if distance[u] < dist:
+        continue
+    for v, w in adj[u]:
+        if distance[u] + w < distance[v]:
+            distance[v] = distance[u] + w
+            heapq.heappush(queue, (distance[v], v))
+
+for i in range(1, n+1):
+    print(-1 if distance[i] == float('inf') else distance[i])
+[SPLIT]
+BFS
+Python
+Graph Theory,
+2026-06-12
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+n, m, start, target = map(int, input().split())
+edges = [list(map(int, input().split())) for _ in range(m)]
+
+graph = {i: [] for i in range(1, n + 1)}
+
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)  # Omit this line if the graph is directed
+
+visited = [False] * (n + 1)
+queue = deque([start])
+visited[start] = True
+
+while queue:
+    current = queue.popleft()
+	
+    if current == target:
+        print("TARGET_FOUND_MESSAGE")
+        sys.exit()
+	
+    for neighbor in graph[current]:
+        if not visited[neighbor]:
+            visited[neighbor] = True
+            queue.append(neighbor)
+
+print("TARGET_NOT_FOUND_MESSAGE")
+[SPLIT]
+DFS
+Python
+Graph Theory,Recursion,
+2026-06-12
+import sys
+input = sys.stdin.readline
+sys.setrecursionlimit(200000)
+
+def dfs(current, graph, visited, target):
+    if current == target:
+        print("TARGET_FOUND_MESSAGE")
+        sys.exit()
+	
+    for neighbor in graph[current]:
+        if not visited[neighbor]:
+            visited[neighbor] = True
+            dfs(neighbor, graph, visited, target)
+
+n, m, start, target = map(int, input().split())
+edges = [list(map(int, input().split())) for _ in range(m)]
+
+graph = {i: [] for i in range(1, n + 1)}
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)  # Omit this line if the graph is directed
+
+visited = [False] * (n + 1)
+
+visited[start] = True
+dfs(start, graph, visited, target)
+
+print("TARGET_NOT_FOUND_MESSAGE")
+
+[SPLIT]
+Date
+Java
+Utility,
+2026-06-12
+public class Date {
+	
+	//fields
+	private int day, month, year;
+	
+	//used to determine the month name
+	private String[] monthArray = {"January", "February", "March", "April", "May", "June", "July", "August",
+			"September", "October", "November", "December"};
+	
+	//used to determine the number of days in each month
+	private int daysArray[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	
+	// constructor methods
+	
+	public Date(int month, int day, int year) {
+		super();
+		this.month = month;
+		this.day = day;
+		this.year = year;
+	}
+	
+	public Date(String month, int day, int year) {
+		super();
+		setMonth(month);
+		this.day = day;
+		this.year = year;
+	}
+	
+	public Date(int dayNumber, int year) {
+		super();
+		this.year = year;
+		setByDayNumber(dayNumber);
+	}
+	
+	// get and set methods
+	
+	public int getDay() {
+		return day;
+	}
+	
+	public void setDay(int day) {
+		this.day = day;
+	}
+	
+	public int getMonth() {
+		return month;
+	}
+	
+	public void setMonth(int month) {
+		this.month = month;
+	}
+	
+	public void setMonth(String month) {
+		for (int i = 0; i < 12; i++) {
+			if (month.equals(monthArray[i]))
+				this.month = i+1;
+		}
+	}
+	
+	public int getYear() {
+		return year;
+	}
+	
+	public void setYear(int year) {
+		this.year = year;
+	}
+	
+	// used to display on console
+	@Override
+	public String toString() {
+		return "Date [day=" + day + ", month=" + month + ", year=" + year + "]";
+	}
+	
+	// utility methods
+	
+	public void setByDayNumber(int dayNumber) {
+		
+		boolean leapYear = false;
+		
+		if (year % 4 == 0) {
+			
+			leapYear = true;
+			
+			if (year % 100 == 0 && !(year % 400 == 0)) 
+				leapYear = false;
+			
+		}
+		
+		if (leapYear)
+			daysArray[1] = 29;
+		
+		int remaining = dayNumber;
+		
+		for (int i = 0; i < 12; i++) {
+			
+			if (remaining - daysArray[i] > 0) {
+				remaining -= daysArray[i];
+			}
+			else {
+				this.day = remaining;
+				this.month = i+1;
+				break;
+			}
+			
+		}
+		
+	}
+	
+	public int getDayNumber() {
+		
+		int dayNumber = 0;
+		
+		for (int i = 0; i < this.month - 1; i++) {
+			
+			dayNumber += daysArray[i];
+			
+		}
+		
+		dayNumber += day;
+		
+		return dayNumber;
+		
+	}
+	
+	public void displayDate1() {
+		System.out.println(month + "/" + day + "/" + year);
+	}
+	
+	public void displayDate2() {
+		System.out.println(monthArray[month - 1] + " " + day + ", " + year);
+	}
+	
+	public void displayDate3() {
+		System.out.println(getDayNumber() + " " + year);
+	}
+	
+}
+[SPLIT]
+Point
+Java
+Utility,
+2026-06-12
+public class Point {
+	
+	//fields
+	private double x;
+	private double y;
+	
+	// constructor method
+	public Point(double x, double y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+	
+	// get and set methods
+	
+	public double getX() {
+		return x;
+	}
+	
+	public void setX(double x) {
+		this.x = x;
+	}
+	
+	public double getY() {
+		return y;
+	}
+	
+	public void setY(double y) {
+		this.y = y;
+	}
+	
+	// used to display to console
+	@Override
+	public String toString() {
+		return "Point [x=" + x + ", y=" + y + "]";
+	}
+	
+	// utility method - find the distance from Point p to this Point
+	public double distanceTo(Point p) {
+		
+		return Math.sqrt(Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2));
+		
+	}
+	
+}
+
+[SPLIT]
+[END]
