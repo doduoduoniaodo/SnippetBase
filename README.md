@@ -8,7 +8,6 @@
 **SnippetBase** is a local Java Swing desktop application for storing, organizing, searching, editing, and exporting reusable code snippets. Built with the **Model-View-Controller (MVC)** architecture, it combines a categorized tree sidebar, tabular snippet browser, and syntax-highlighted code editor with automatic local persistence.
 
 - **Author:** Qianyi Ma
-- **Course:** ICS4U1-02 (Final Summative Project)
 - **Date:** June 12, 2026
 
 ---
