@@ -49,15 +49,7 @@ Defined in `src/model/Language.java`:
 
 ## Screenshots
 
-> Add screenshots of the running application in a `docs/screenshots/` folder and update the paths below.
-
-| Main Workspace | Syntax-Highlighted Editor |
-| --- | --- |
-| ![Main Workspace](docs/screenshots/main-workspace.png) | ![Code Editor](docs/screenshots/code-editor.png) |
-
-| Category Filtering & Search | Export / Save As Dialog |
-| --- | --- |
-| ![Filtering and Search](docs/screenshots/filter-search.png) | ![Save As](docs/screenshots/save-as.png) |
+![SnippetBase Workspace](docs/screenshots/workspace.png)
 
 ---
 
@@ -82,6 +74,9 @@ SnippetBase follows the **MVC** pattern across four packages:
 
 ```text
 FSP - SnippetBase/
+├── docs/
+│   └── screenshots/
+│       └── workspace.png            # Application screenshot
 ├── file/
 │   └── snippetBaseData.txt          # Local snippet & tag repository data
 ├── lib/
